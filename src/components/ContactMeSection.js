@@ -42,7 +42,7 @@ const LandingSection = () => {
       .email('Invalid email format')
       .required('Required'),
     type: Yup.string().required('Required'),
-    comment: Yup.string().required('Required')
+    comment: Yup.string().required('Required').min(25, 'Must be at least 25 characters')
   })
 
   const formik = useFormik({
