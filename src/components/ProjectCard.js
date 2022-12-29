@@ -5,8 +5,8 @@ import React from "react";
 
 const ProjectCard = ({ title, description, imageSrc }) => {
   return (
-    <Box maxW='sm' borderRadius='lg' overflow='hidden' backgroundColor='white' color="black">
-      <Box maxW='sm' borderRadius='lg' overflow='hidden'>
+    <Box borderRadius='lg' overflow='hidden' backgroundColor='white' color="black">
+      <Box borderRadius='lg' overflow='hidden'>
         <Image src={imageSrc} alt={title} />
       </Box>
       <Box p='3'>
@@ -30,7 +30,6 @@ const ProjectCard = ({ title, description, imageSrc }) => {
         >
           <a href="">See More <FontAwesomeIcon icon={faArrowRight} size="1x" /></a>
         </Text>
-
       </Box>
     </Box>
   )
