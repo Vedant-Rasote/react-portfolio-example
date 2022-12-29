@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import usePrevious from "../hooks/usePrevious";
 import { HashLink } from 'react-router-hash-link';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
@@ -34,8 +35,30 @@ const socials = [
 ];
 
 const Header = () => {
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const headerRef = useRef(null);
+
+  const prevScrollPosition = usePrevious(scrollPosition);
+  const handleScroll = (initialScroll, newScroll) => {
+    headerRef
+      .current
+      .style
+      .transform = (initialScroll > newScroll) ? `translateY(0px)` : `translateY(-200px)`;
+  }
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrollPosition(window.pageYOffset)
+      handleScroll(prevScrollPosition, scrollPosition);
+    };
+    window.removeEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [scrollPosition]);
+
   return (
-    <Box
+    <Box ref={headerRef}
       position="fixed"
       top={0}
       left={0}
