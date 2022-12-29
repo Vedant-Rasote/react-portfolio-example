@@ -11,6 +11,7 @@ import {
   Select,
   Textarea,
   VStack,
+  Spinner
 } from "@chakra-ui/react";
 import * as Yup from 'yup';
 import FullScreenSection from "./FullScreenSection";
@@ -28,25 +29,11 @@ const LandingSection = () => {
     comment: "",
   }
 
-  const onSubmit = (values) => { console.log(values); }
-
-  const validate = (values) => {
-    // values.firstName values.email values.type values.comment
-    // errors.firstName errors.email errors.type errors.comment
-
-    let errors = {}
-    if (!values.firstName) { errors.firstName = "Required" }
-
-    if (!values.email) {
-      errors.email = "Required"
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-      errors.email = 'Invalid email format'
-    }
-
-    if (!values.type) { errors.type = "Required" }
-    if (!values.comment) { errors.comment = "Required" }
-
-    return errors;
+  const onSubmit = async (values) => {
+    await submit("", values)
+    const { type, message } = response;
+    onOpen(type, message);
+    type == 'success' && formik.resetForm()
   }
 
   const validationSchema = Yup.object({
@@ -61,11 +48,8 @@ const LandingSection = () => {
   const formik = useFormik({
     initialValues,
     onSubmit,
-    // validate,
     validationSchema,
   });
-
-  console.log("values", formik.values, "errors", formik.errors);
 
   return (
     <FullScreenSection
@@ -86,9 +70,7 @@ const LandingSection = () => {
                 <Input
                   id="firstName"
                   name="firstName"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.name}
+                  {...formik.getFieldProps("firstName")}
                 />
                 {formik.touched.firstName && formik.errors.firstName ? <FormErrorMessage>{formik.errors.firstName}</FormErrorMessage> : null}
               </FormControl>
@@ -98,9 +80,7 @@ const LandingSection = () => {
                   id="email"
                   name="email"
                   type="email"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.email}
+                  {...formik.getFieldProps("email")}
                 />
                 {formik.touched.email && formik.errors.email ? <FormErrorMessage>{formik.errors.email}</FormErrorMessage> : null}
               </FormControl>
@@ -109,9 +89,7 @@ const LandingSection = () => {
                 <Select
                   id="type"
                   name="type"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.type}
+                  {...formik.getFieldProps("type")}
                 >
                   <option value="hireMe">Freelance project proposal</option>
                   <option value="openSource">
@@ -127,14 +105,12 @@ const LandingSection = () => {
                   id="comment"
                   name="comment"
                   height={250}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.comment}
+                  {...formik.getFieldProps("comment")}
                 />
                 {formik.touched.comment && formik.errors.comment ? <FormErrorMessage>{formik.errors.comment}</FormErrorMessage> : null}
               </FormControl>
               <Button type="submit" colorScheme="purple" width="full">
-                Submit
+                {isLoading ? <Spinner /> : "Submit"}
               </Button>
             </VStack>
           </form>
