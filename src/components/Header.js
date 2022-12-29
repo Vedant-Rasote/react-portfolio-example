@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { HashLink } from 'react-router-hash-link';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -33,21 +34,6 @@ const socials = [
 ];
 
 const Header = () => {
-  const handleClick = (e) => {
-    e.preventDefault()
-    let anchor = e.target.getAttribute("href");
-    const id = `${anchor}-section`;
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView(
-        {
-          behavior: "smooth",
-          block: "start"
-        }
-      );
-    }
-  };
-
   return (
     <Box
       position="fixed"
@@ -74,8 +60,8 @@ const Header = () => {
           </nav>
           <nav>
             <HStack spacing={8}>
-              <a onClick={handleClick} key="projects" href="projects">Projects</a>
-              <a onClick={handleClick} key="contactme" href="contactme">Contact Me</a>
+              <HashLink smooth to="/#projects">Projects</HashLink>
+              <HashLink smooth to="/#contactme">Contact Me</HashLink>
             </HStack>
           </nav>
         </HStack>

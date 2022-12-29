@@ -6,6 +6,7 @@ import ContactMeSection from "./components/ContactMeSection";
 import Footer from "./components/Footer";
 import { AlertProvider } from "./context/alertContext";
 import Alert from "./components/Alert";
+import {Routes , Route} from 'react-router-dom'
 
 function App() {
   return (
